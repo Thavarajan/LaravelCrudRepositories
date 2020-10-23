@@ -15,7 +15,7 @@ class FormatResponseHelper
      * @param mixed        $result any object that can be converted to json
      * @param ResponseCode $code   Any response code
      *
-     * @return json string response
+     * @return \Illuminate\Http\JsonResponse
      */
     public function responseJSON($result, $code = Response::HTTP_OK)
     {
@@ -27,7 +27,7 @@ class FormatResponseHelper
      *
      * @param \Exception $exception Genereal exception that can be sent to the user
      *
-     * @return Json string response with some invalid http reponsecode
+     * @return \Illuminate\Http\JsonResponse response with some invalid http reponsecode
      */
     public function responseError(\Exception $exception)
     {
@@ -64,6 +64,8 @@ class FormatResponseHelper
      *
      * @param string $message    to return the Error string
      * @param int    $statusCode to return the error with statuscode
+     *
+     * @return \Illuminate\Http\JsonResponse
      */
     public function responseErrorMessage($message, $statusCode)
     {
