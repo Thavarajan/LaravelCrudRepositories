@@ -6,7 +6,6 @@ use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\ModelNotFoundException;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
-use Thavam\Repositories\Requests\ModelCriteriaRequest;
 
 abstract class RepositoryBase extends CrudBase
 {
@@ -57,6 +56,10 @@ abstract class RepositoryBase extends CrudBase
 
     /**
      * USed to create a new model.
+     *
+     * @param Request $request To create a request
+     *
+     * @return \Illuminate\Http\JsonResponse With newly created model
      */
     public function create(Request $request)
     {
@@ -73,19 +76,12 @@ abstract class RepositoryBase extends CrudBase
      *
      * @param int $id /Primary key id of the model
      *
-     * @return updated model
+     * @return \Illuminate\Http\JsonResponse With updated model
      */
     public function update(Request $request, $id)
     {
         $this->validate($request);
         $this->validateUpdate($request, $id);
-        $data = $request->all();
-
-        return $this->updateModel($data, $id);
-    }
-
-    public function updatepassword(Request $request, $id)
-    {
         $data = $request->all();
 
         return $this->updateModel($data, $id);
@@ -154,10 +150,15 @@ abstract class RepositoryBase extends CrudBase
     /**
      * Used to return the collection of the model.
      *
-     * @param Request $request
+     * Request
      */
-    public function getByCriteria(ModelCriteriaRequest $request)
+    public function getByCriteria(Request $request)
     {
+        $request->validate([
+            '*.fieldname' => 'required|string',
+            '*.operator' => 'required|string|max:10',
+            '*.criteria' => 'required',
+        ]);
         $filters = $request->all();
         $query = $this->getModelQuery();
         foreach ($filters as $filter) {
