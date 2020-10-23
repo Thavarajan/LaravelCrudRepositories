@@ -100,6 +100,13 @@ abstract class CrudBase
         $this->formatResponse = new FormatResponseHelper();
     }
 
+    /**
+     * Used to Insert a data directly to the model.
+     *
+     * @param array $data
+     *
+     * @return \Illuminate\Http\JsonResponse
+     */
     public function insertModel($data)
     {
         $newmodel = null;
@@ -124,6 +131,14 @@ abstract class CrudBase
         return  $this->transResponse($newmodel, Response::HTTP_CREATED, 'Record successfully created');
     }
 
+    /**
+     * Used to update the Record based on ID.
+     *
+     * @param array  $data
+     * @param string $id
+     *
+     * @return \Illuminate\Http\JsonResponse
+     */
     public function updateModel($data, $id)
     {
         $umodel = null;
@@ -146,6 +161,11 @@ abstract class CrudBase
         return $this->transResponse($umodel, Response::HTTP_ACCEPTED, 'Record successfully updated');
     }
 
+    /**
+     * Used to Delete the model based on the primary key value.
+     *
+     * @return \Illuminate\Http\JsonResponse
+     */
     public function deleteModel(int $id)
     {
         try {
@@ -176,7 +196,7 @@ abstract class CrudBase
      * @param mixed        $result
      * @param ResponseCode $code
      *
-     * @return json String Response
+     * @return \Illuminate\Http\JsonResponse
      */
     public function responseJSON($result, $code = Response::HTTP_OK)
     {
@@ -190,7 +210,7 @@ abstract class CrudBase
      * @param mixed        $result
      * @param ResponseCode $code
      *
-     * @return json String Response
+     * @return \Illuminate\Http\JsonResponse
      */
     public function transResponse($result, $code = Response::HTTP_OK, $message = '')
     {
@@ -203,7 +223,7 @@ abstract class CrudBase
      * @param string       $message to send as a json
      * @param ResponseCode $code    Any http response code
      *
-     * @return Json string response
+     * @return \Illuminate\Http\JsonResponse
      */
     public function responseMessage($message, $code = Response::HTTP_OK)
     {
@@ -215,7 +235,7 @@ abstract class CrudBase
      *
      * @param \Exception $exception Genereal exception that can be sent to the user
      *
-     * @return Json string response with some invalid http reponsecode
+     * @return \Illuminate\Http\JsonResponse response with some invalid http reponsecode
      */
     public function responseError(\Exception $exception)
     {
@@ -226,6 +246,8 @@ abstract class CrudBase
      * Used to insert the History reocrd in the history table.
      *
      * @param string $action
+     *
+     * @return void
      */
     public function insertHistory($action, $record)
     {
